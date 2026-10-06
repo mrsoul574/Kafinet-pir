@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>کافینت پیر | مرجع خدمات و دانلود فیلم</title>
+    <meta name="theme-color" content="#0d0f12">
+    
+    <style>
+        :root {
+            --bg-color: #0d0f12;
+            --card-bg: rgba(22, 27, 34, 0.95);
+            --card-border: rgba(56, 189, 248, 0.25);
+            --accent-color: #38bdf8;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        .light-theme {
+            --bg-color: #f0f4f8;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(14, 165, 233, 0.3);
+            --accent-color: #0284c7;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden !important;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 20px;
+        }
+
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 8px 12px;
+            width: 100%;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .brand-section h1 {
+            font-size: 1rem;
+            color: var(--accent-color);
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-theme {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-color);
+            border: 1px solid var(--card-border);
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 10px;
+            margin: 0 auto;
+        }
+
+        .ad-card {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(13, 15, 18, 0.8));
+            border: 1px dashed var(--accent-color);
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ad-title {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 0.8rem;
+        }
+
+        .movie-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .movie-box-title {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .movie-input {
+            flex: 1;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            outline: none;
+            width: 50%;
+        }
+
+        .btn-search {
+            background: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .movie-result {
+            margin-top: 10px;
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .movie-info-grid {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .movie-poster {
+            width: 90px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #111;
+            flex-shrink: 0;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .movie-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .movie-name {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-meta {
+            font-size: 0.7rem;
+            color: var(--accent-color);
+            margin: 3px 0;
+            font-weight: bold;
+        }
+
+        .movie-desc {
+            font-size: 0.72rem;
+            color: var(--text-color);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .download-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .dl-btn {
+            background: var(--accent-color);
+            color: #000;
+            text-decoration: none;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .horizontal-scroll-row {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
+        .horizontal-scroll-row::-webkit-scrollbar {
+            height: 3px;
+        }
+
+        .horizontal-scroll-row::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .movie-suggest-card {
+            min-width: 95px;
+            width: 95px;
+            flex-shrink: 0;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+        }
+
+        .movie-suggest-card img {
+            width: 95px;
+            height: 135px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .movie-suggest-card:active img {
+            transform: scale(0.95);
+        }
+
+        .movie-suggest-card div {
+            font-size: 0.72rem;
+            font-weight: bold;
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-color);
+        }
+
+        .categories-bar {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 8px 0;
+            margin-top: 6px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .categories-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .cat-btn.active {
+            background: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            margin: 12px 0 6px;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 8px;
+            min-width: 130px;
+            width: 130px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-icon {
+            font-size: 1.1rem;
+        }
+
+        .fav-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .fav-btn.active {
+            color: var(--accent-color);
+        }
+
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin: 4px 0 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-desc {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            height: 24px;
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: #000;
+            background: var(--accent-color);
+            text-align: center;
+            padding: 4px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.7rem;
+            display: block;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-top: 15px;
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            background: var(--accent-color);
+            color: #000;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="brand-section">
+                <h1>💻 کافینت پیر</h1>
+            </div>
+
+            <div class="status-bar">
+                <div class="status-badge" id="device-display">📱 همراه</div>
+                <div class="status-badge" id="clock-display">00:00</div>
+                <button class="btn-theme" onclick="toggleTheme()">🌓 تم</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- بنر تبلیغاتی کانال روبیکا -->
+        <div class="ad-card">
+            <div>
+                <div class="ad-title">✏️ کانال لوازم تحریر پیر در روبیکا</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted);">عرضه لوازم تحریر با بهترین قیمت</div>
+            </div>
+            <a href="https://rubika.ir/lavzmtahrirypir" target="_blank" class="card-link" style="padding: 4px 8px; white-space: nowrap;">ورود به کانال</a>
+        </div>
+
+        <div class="movie-box">
+            <div class="movie-box-title">🎬 جستجو و دانلود هوشمند فیلم</div>
+            <div class="search-row">
+                <input type="text" id="movie-input" class="movie-input" placeholder="نام فیلم (مثلاً اسکویید گیم، Inception)..." onkeypress="handleMovieKey(event)">
+                <button class="btn-search" onclick="searchMovie()">جستجو 🔍</button>
+            </div>
+
+            <div id="movie-result" class="movie-result">
+                <div class="movie-info-grid">
+                    <img id="m-poster" class="movie-poster" src="" alt="کاور فیلم">
+                    <div class="movie-details">
+                        <div id="m-title" class="movie-name">نام فیلم</div>
+                        <div id="m-meta" class="movie-meta">سال ساخت | امتیاز</div>
+                        <div id="m-desc" class="movie-desc">خلاصه داستان...</div>
+                        
+                        <div id="m-links" class="download-links"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">🔥 فیلم‌های پیشنهادی و ترند روز (برای دانلود کلیک کنید)</div>
+        <div class="horizontal-scroll-row" id="trending-movies">
+            <div class="movie-suggest-card" onclick="autoSearchMovie('اسکویید گیم')">
+                <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300" alt="Squid Game">
+                <div>Squid Game</div>
+            </div>
+            <div class="movie-suggest-card" onclick="autoSearchMovie('اوپنهایمر')">
+                <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300" alt="Oppenheimer">
+                <div>Oppenheimer</div>
+            </div>
+            <div class="movie-suggest-card" onclick="autoSearchMovie('آواتار')">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300" alt="Avatar">
+                <div>Avatar 2</div>
+            </div>
+            <div class="movie-suggest-card" onclick="autoSearchMovie('میان ستاره ای')">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300" alt="Interstellar">
+                <div>Interstellar</div>
+            </div>
+            <div class="movie-suggest-card" onclick="autoSearchMovie('مرد عنکبوتی')">
+                <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?w=300" alt="Spider-Man">
+                <div>Spider-Man</div>
+            </div>
+        </div>
+
+        <div class="categories-bar">
+            <button class="cat-btn active" onclick="filterCategory('all', this)">همه خدمات</button>
+            <button class="cat-btn" onclick="filterCategory('fav', this)">⭐ علاقه‌مندی‌ها</button>
+            <button class="cat-btn" onclick="filterCategory('gov', this)">🏛️ دولتی و قضایی</button>
+            <button class="cat-btn" onclick="filterCategory('duty', this)">🪖 نظام وظیفه</button>
+            <button class="cat-btn" onclick="filterCategory('edu', this)">🎓 آموزش و دانشگاه</button>
+            <button class="cat-btn" onclick="filterCategory('tax', this)">🧾 مالیات و بیمه</button>
+            <button class="cat-btn" onclick="filterCategory('estate', this)">🏠 املاک و مسکن</button>
+            <button class="cat-btn" onclick="filterCategory('traffic', this)">🚗 خودرو و حمل‌ونقل</button>
+            <button class="cat-btn" onclick="filterCategory('bank', this)">🏦 بانک‌ها و پرداخت</button>
+            <button class="cat-btn" onclick="filterCategory('shop', this)">🛒 خرید و فروش</button>
+            <button class="cat-btn" onclick="filterCategory('social', this)">💬 پیام‌رسان‌ها</button>
+            <button class="cat-btn" onclick="filterCategory('general', this)">🌐 عمومی و ابزارها</button>
+        </div>
+
+        <div class="section-title">🔗 لیست خدمات و سامانه‌ها (بکشید ↔)</div>
+        <div class="horizontal-scroll-row" id="main-scroll-row"></div>
+
+        <div id="fav-section" style="display: none;">
+            <div class="section-title">⭐ سامانه‌های برگزیده شما</div>
+            <div class="horizontal-scroll-row" id="fav-scroll-row"></div>
+        </div>
+
+        <div class="info-card">
+            <div>📍 آدرس: بستان‌آباد، آذربایجان شرقی - کافینت پیر</div>
+            <div>📞 تلفن تماس: 09052190376</div>
+            <div>👨‍💻 توسعه‌دهنده: javadnoran | استودیو Soul</div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">پیام سیستم</div>
+
+    <script>
+        const postersMap = {
+            "اسکویید گیم": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300",
+            "اوپنهایمر": "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300",
+            "آواتار": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300",
+            "میان ستاره ای": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300",
+            "مرد عنکبوتی": "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=300"
+        };
+
+        const defaultServices = [
+            // خدمات اصلی کافی‌نت و دولتی
+            { id: 1, name: "سامانه سجام", cat: "gov", icon: "📊", url: "https://www.sejam.ir", desc: "ثبت‌نام و احراز هویت بورس" },
+            { id: 2, name: "مای مدیو (MyMedu)", cat: "edu", icon: "🎓", url: "https://my.medu.ir", desc: "پنجره خدمات آموزش و پرورش" },
+            { id: 3, name: "سامانه ثنا", cat: "gov", icon: "⚖️", url: "https://sana.adliran.ir", desc: "خدمات الکترونیک قضایی" },
+            { id: 4, name: "ابلاغیه الکترونیکی", cat: "gov", icon: "📩", url: "https://eblagh.adliran.ir", desc: "مشاهده ابلاغیه‌های قضایی" },
+            { id: 21, name: "کارت هوشمند ملی", cat: "gov", icon: "🪪", url: "https://www.ncr.ir", desc: "ثبت‌نام و پیگیری کارت ملی" },
+            { id: 22, name: "تسهیلات وام ازدواج", cat: "gov", icon: "💍", url: "https://ve.cbi.ir", desc: "ثبت‌نام وام ازدواج و فرزندآوری" },
+            { id: 23, name: "سوابق بیمه تأمین اجتماعی", cat: "tax", icon: "🏥", url: "https://eservices.tamin.ir", desc: "مشاهده و استعلام سوابق بیمه" },
+
+            // خودرو و حمل‌ونقل
+            { id: 5, name: "تعویض پلاک", cat: "traffic", icon: "🚘", url: "https://nobatdehi.epolice.ir", desc: "نوبت‌دهی تعویض پلاک" },
+            { id: 6, name: "خلافی خودرو", cat: "traffic", icon: "🧾", url: "https://baman24.ir", desc: "استعلام و پرداخت خلافی" },
+            { id: 24, name: "سامانه کارت سوخت", cat: "traffic", icon: "⛽", url: "https://mob.gov.ir", desc: "پیگیری و ثبت درخواست کارت سوخت" },
+            { id: 25, name: "معاینه فنی", cat: "traffic", icon: "🔧", url: "https://symfa.ir", desc: "نوبت‌دهی معاینه فنی" },
+            { id: 26, name: "ایران خودرو", cat: "traffic", icon: "🚗", url: "https://ikco.ir", desc: "ثبت‌نام و فروش ایران خودرو" },
+            { id: 27, name: "سایپا", cat: "traffic", icon: "🚘", url: "https://saipacorp.com", desc: "ثبت‌نام و فروش سایپا" },
+
+            // امور عمومی و مسکن
+            { id: 7, name: "املاک و اسکان", cat: "estate", icon: "🏠", url: "https://amlak.mrud.ir", desc: "سامانه املاک و اسکان" },
+            { id: 8, name: "کد پستی (GNAF)", cat: "general", icon: "📮", url: "https://gavahi.post.ir", desc: "دریافت گواهی کدپستی" },
+            { id: 9, name: "بامن ۲۴", cat: "general", icon: "💳", url: "https://baman24.ir", desc: "خرید شارژ و پرداخت قبض" },
+            { id: 10, name: "گوگل", cat: "general", icon: "🔍", url: "https://www.google.com", desc: "موتور جستجوی گوگل" },
+            { id: 11, name: "آپارات", cat: "general", icon: "🎬", url: "https://www.aparat.com", desc: "سرویس ویدیو ایرانی" },
+            { id: 12, name: "دیوار", cat: "shop", icon: "📢", url: "https://divar.ir", desc: "خرید و فروش آنلاین" },
+            { id: 13, name: "دیجی‌کالا", cat: "shop", icon: "🛍️", url: "https://www.digikala.com", desc: "فروشگاه اینترنتی" },
+
+            // پیام‌رسان‌ها
+            { id: 14, name: "پیام‌‌رسان شاد", cat: "social", icon: "📱", url: "https://web.shad.ir", desc: "نسخه وب شاد" },
+            { id: 15, name: "روبیکا", cat: "social", icon: "🔴", url: "https://web.rubika.ir", desc: "نسخه وب روبیکا" },
+            { id: 16, name: "ایتا", cat: "social", icon: "🟠", url: "https://web.eitaa.com", desc: "نسخه وب ایتا" },
+            { id: 17, name: "تلگرام", cat: "social", icon: "✈️️", url: "https://web.telegram.org", desc: "نسخه وب تلگرام" },
+
+            // خدمات اضافه شده از پروژه Soul Studio
+            { id: 28, name: "پنجره ملی خدمات دولت", cat: "gov", icon: "🏛️", url: "https://my.gov.ir", desc: "درگاه یکپارچه خدمات هوشمند" },
+            { id: 29, name: "درگاه ملی مجوزها", cat: "gov", icon: "📜", url: "https://mojavez.ir", desc: "صدور آنلاین مجوزهای کسب‌وکار" },
+            { id: 30, name: "ثبت احوال", cat: "gov", icon: "👤", url: "https://www.sabteahval.ir", desc: "خدمات الکترونیک ثبت احوال" },
+            { id: 31, name: "سامانه یارانه و حمایت", cat: "gov", icon: "🪙", url: "https://hemayat.mcls.gov.ir", desc: "استعلام و پیگیری یارانه" },
+
+            { id: 32, name: "عدل ایران", cat: "gov", icon: "⚖️", url: "https://adliran.ir", desc: "درگاه خدمات الکترونیک قضایی" },
+            { id: 33, name: "ثبت اسناد و املاک", cat: "gov", icon: "📑", url: "https://ssaa.ir", desc: "سازمان ثبت اسناد کشور" },
+            { id: 34, name: "وکالت الکترونیک", cat: "gov", icon: "👨‍⚖️", url: "https://remotebill.adliran.ir", desc: "سامانه وکلا و قرارداد الکترونیک" },
+
+            { id: 35, name: "سامانه سخا (نظام وظیفه)", cat: "duty", icon: "🪖", url: "https://sakha.epolice.ir", desc: "خدمات اینترنتی نظام وظیفه" },
+            { id: 36, name: "پلیس +10", cat: "duty", icon: "👮", url: "https://epolice.ir", desc: "خدمات انتظامی و گذرنامه" },
+
+            { id: 37, name: "سازمان سنجش", cat: "edu", icon: "📝", url: "https://sanjesh.org", desc: "ثبت‌نام آزمون‌ها و کنکور" },
+            { id: 38, name: "دانشگاه آزاد (آموزشیار)", cat: "edu", icon: "🏢", url: "https://edu.iau.ir", desc: "سامانه آموزشیار دانشگاه آزاد" },
+            { id: 39, name: "دانشگاه پیام نور (گلستان)", cat: "edu", icon: "📚", url: "https://reg.pnu.ac.ir", desc: "سامانه جامع آموزشی گلستان" },
+            { id: 40, name: "ایران‌داک", cat: "edu", icon: "📖", url: "https://irandoc.ac.ir", desc: "پژوهشگاه علوم و فناوری اطلاعات" },
+
+            { id: 41, name: "سامانه مالیات من", cat: "tax", icon: "💰", url: "https://my.tax.gov.ir", desc: "خدمات الکترونیک مالیاتی" },
+            { id: 42, name: "بیمه سلامت", cat: "tax", icon: "🏥", url: "https://ihio.gov.ir", desc: "خدمات بیمه سلامت همگانی" },
+            { id: 43, name: "بیمه مرکزی", cat: "tax", icon: "🛡️", url: "https://centinsur.ir", desc: "استعلام بیمه‌نامه‌ها" },
+
+            { id: 44, name: "نهضت ملی مسکن", cat: "estate", icon: "🏢", url: "https://saman.mrud.ir", desc: "ثبت‌نام طرح‌های حمایتی مسکن" },
+            { id: 45, name: "ثبت معاملات املاک", cat: "estate", icon: "🤝", url: "https://irsc.ir", desc: "سامانه ثبت کدهای رهگیری" },
+
+            { id: 46, name: "چک صیادی (مرکزی)", cat: "bank", icon: "🏦", url: "https://cbi.ir", desc: "ثبت و استعلام چک صیاد" },
+            { id: 47, name: "زرین‌پال", cat: "bank", icon: "💳", url: "https://zarinpal.com", desc: "درگاه پرداخت اینترنتی" },
+
+            { id: 48, name: "ترب", cat: "shop", icon: "🔍", url: "https://torob.com", desc: "موتور جستجوی بهترین قیمت" },
+            { id: 49, name: "شیپور", cat: "shop", icon: "📦", url: "https://sheypoor.com", desc: "نیازمندی‌ها و خرید و فروش" },
+            { id: 50, name: "ایمالز", cat: "shop", icon: "🏷️", url: "https://emalls.ir", desc: "مقایسه قیمت فروشگاه‌ها" },
+
+            { id: 51, name: "پیگیری مرسولات پستی", cat: "general", icon: "📦", url: "https://tracking.post.ir", desc: "رهگیری محموله‌های پستی" },
+            { id: 52, name: "محاسبه آنلاین شبا", cat: "general", icon: "🔢", url: "https://baman24.ir", desc: "تبدیل کارت و حساب به شبا" }
+        ];
+
+        let favorites = JSON.parse(localStorage.getItem('peer_favs')) || [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            detectDevice();
+            renderServices(defaultServices);
+            updateFavoritesUI();
+            startClock();
+        });
+
+        function detectDevice() {
+            const ua = navigator.userAgent;
+            const dev = document.getElementById('device-display');
+            if (/android/i.test(ua)) dev.innerText = "📱 اندروید";
+            else if (/iPhone|iPad/i.test(ua)) dev.innerText = "📱 آیفون";
+            else dev.innerText = "💻 سیستم";
+        }
+
+        function startClock() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('clock-display').innerText = now.toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'});
+            }, 1000);
+        }
+
+        function handleMovieKey(e) {
+            if (e.key === 'Enter') searchMovie();
+        }
+
+        function autoSearchMovie(title) {
+            document.getElementById('movie-input').value = title;
+            searchMovie();
+        }
+
+        function searchMovie() {
+            const query = document.getElementById('movie-input').value.trim();
+
+            if (!query) {
+                showToast("نام فیلم را وارد کنید");
+                return;
+            }
+
+            showToast("در حال دریافت لینک‌های دانلود...");
+
+            const poster = postersMap[query] || "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300";
+            const encoded = encodeURIComponent(query);
+
+            document.getElementById('m-poster').src = poster;
+            document.getElementById('m-title').innerText = query;
+            document.getElementById('m-meta').innerText = '🔥 آماده دانلود مستقیم';
+            document.getElementById('m-desc').innerText = `کیفیت‌های متنوع برای دانلود فیلم/سریال "${query}" آماده است.`;
+
+            document.getElementById('m-links').innerHTML = `
+                <a href="https://google.com/search?q=دانلود+فیلم+${encoded}+دوبله+فارسی" target="_blank" class="dl-btn">🎙️ دانلود دوبله فارسی</a>
+                <a href="https://google.com/search?q=دانلود+فیلم+${encoded}+زیرنویس+چسبیده" target="_blank" class="dl-btn">💬 زیرنویس چسبیده</a>
+                <a href="https://google.com/search?q=دانلود+فیلم+${encoded}+1080p" target="_blank" class="dl-btn">📥 کیفیت 1080p</a>
+                <a href="https://google.com/search?q=دانلود+فیلم+${encoded}+720p" target="_blank" class="dl-btn">📥 کیفیت 720p</a>
+            `;
+
+            document.getElementById('movie-result').style.display = 'block';
+        }
+
+        function renderServices(list) {
+            const row = document.getElementById('main-scroll-row');
+            row.innerHTML = '';
+
+            list.forEach(item => {
+                const isFav = favorites.includes(item.id);
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-icon">${item.icon}</span>
+                        <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav(${item.id})">★</button>
+                    </div>
+                    <div class="card-title">${item.name}</div>
+                    <div class="card-desc">${item.desc}</div>
+                    <a href="${item.url}" target="_blank" class="card-link">ورود</a>
+                `;
+                row.appendChild(card);
+            });
+        }
+
+        function toggleFav(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(fId => fId !== id);
+                showToast("حذف از نشان‌شده‌ها");
+            } else {
+                favorites.push(id);
+                showToast("افزوده شد به نشان‌شده‌ها");
+            }
+            localStorage.setItem('peer_favs', JSON.stringify(favorites));
+            renderServices(defaultServices);
+            updateFavoritesUI();
+        }
+
+        function updateFavoritesUI() {
+            const favSection = document.getElementById('fav-section');
+            const favRow = document.getElementById('fav-scroll-row');
+            const favItems = defaultServices.filter(s => favorites.includes(s.id));
+
+            if (favItems.length > 0) {
+                favSection.style.display = 'block';
+                favRow.innerHTML = '';
+                favItems.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'service-card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <span class="card-icon">${item.icon}</span>
+                            <button class="fav-btn active" onclick="toggleFav(${item.id})">★</button>
+                        </div>
+                        <div class="card-title">${item.name}</div>
+                        <a href="${item.url}" target="_blank" class="card-link">ورود</a>
+                    `;
+                    favRow.appendChild(card);
+                });
+            } else {
+                favSection.style.display = 'none';
+            }
+        }
+
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (cat === 'all') renderServices(defaultServices);
+            else if (cat === 'fav') renderServices(defaultServices.filter(s => favorites.includes(s.id)));
+            else renderServices(defaultServices.filter(s => s.cat === cat));
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        }
+    </script>
+</body>
+</html>
